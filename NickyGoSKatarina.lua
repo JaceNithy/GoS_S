@@ -69,30 +69,28 @@ OnSpellCast(function(castProc)
 	end
 end)
 
-OnCreateObj(function(o)
-	if GetDistance(o) < 2500 then
-		if o.name == "Katarina_Base_W_Indicator_Ally" then
-			table.insert(DaggerPos, o)
+OnCreateObj(function(Obj)
+	if GetDistance(Obj) < 2500 then
+		if Obj.name == "Katarina_Base_W_Indicator_Ally" then
+			table.insert(DaggerPos, Obj)
 			local delay = 0.2
-			if GetDistance(o) < 50 then
+			if GetDistance(Obj) < 50 then
 				delay = 0
 			end
-			DelayAction(function()
-				table.insert(DaggerIsCast, o)
-			end,1.0 - delay)
+			DelayAction(function() table.insert(DaggerIsCast, Obj) end, 1.0 - delay)
 		end
 	end
 end)
 
-OnDeleteObj(function(o)
-	if o.name == "Katarina_Base_W_Indicator_Ally" then
+OnDeleteObj(function(Obj)
+	if Obj.name == "Katarina_Base_W_Indicator_Ally" then
 		for i,v in pairs(DaggerIsCast) do
-			if GetNetworkID(v) == GetNetworkID(o) then
-				table.remove(DaggerIsCast,i)
+			if GetNetworkID(v) == GetNetworkID(Obj) then
+				table.remove(DaggerIsCast, i)
 			end
 		end
 		for i,v in pairs(DaggerPos) do
-			if GetNetworkID(v) == GetNetworkID(o) then
+			if GetNetworkID(v) == GetNetworkID(Obj) then
 				table.remove(DaggerPos,i)
 			end
 		end
