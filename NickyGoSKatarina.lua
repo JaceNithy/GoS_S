@@ -12,7 +12,7 @@ mainMenu.CK:Boolean('CR', 'Use [R]', true)
 mainMenu.CK:Boolean('CRC', 'Cancel [R]', true)
 mainMenu.CK:Boolean('CanItems', 'Use [Gun]', true)
 if Ignite ~= nil then mainMenu.CK:Boolean("AutoIgnite", "Auto Ignite", true) end
-mainMenu.CK:Slider("xR","Count Enemies", 3, 1, 5, 1)
+mainMenu.CK:Slider("CountR","Count Enemies", 3, 1, 5, 1)
 
 mainMenu:SubMenu('Keys', 'Keys [Katarina]')
 mainMenu.Keys:Key("ComboKat", "Combo [Key]", string.byte(" "))
@@ -37,7 +37,7 @@ local kataCounter = 0
 local kataR = false
 
 PrintChat("<font color=\"#adff2f\">[Katarina Jace]:</font> <font color=\"#00FFFF\">Katarina</font> <font color=\"#adff2f\">Injected successfully!</font>")
-
+PrintChat("font color=\"#00FFFF\">Update: 0.1</font> ")
 
 OnProcessSpell(function(unit,spell)
 	if unit == myHero and spell.name == "KatarinaR" then
@@ -117,7 +117,7 @@ OnDraw(function()
 end)
 
 function ComboKat()
-	if mainMenu.Keys.ComboKat:Value()  then
+	if mainMenu.Keys.ComboKat:Value() and not kataR == true then
 		local target = GetCurrentTarget()
 		if ValidTarget(target, 1500) then
 			if GetDistance(target) < 650 and IsReady(_Q) then
@@ -179,7 +179,7 @@ end
 function CastGun()
 	if mainMenu.Keys.ComboKat:Value() then
 		local target = GetCurrentTarget()
-		if ValidTarget(target,1500) then
+		if ValidTarget(target,1500) and not kataR == true then
 			local tiro = GetItemSlot(myHero, 3146)
 			if tiro >= 1 and ValidTarget(target, 550) then
 				if CanUseSpell(myHero, tiro) == READY then
@@ -216,7 +216,7 @@ function selfcAR()
 		end 
 	end
 	if IsReady(_R) then
-		if EnemiesAround(GetOrigin(myHero),500) >= mainMenu.CK.xR:Value() then
+		if EnemiesAround(GetOrigin(myHero),500) >= mainMenu.CK.CountR:Value() then
 			CastSpell(_R)
 		end 
 	end
@@ -230,7 +230,10 @@ end
 
 OnTick(function(myHero)
 	--Combo Kat
+
 	ComboKat()
+	 
+	
 	--AutoLevel
 	AutoLevel()
 	--LaneClear
