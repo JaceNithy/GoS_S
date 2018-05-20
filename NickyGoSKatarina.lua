@@ -12,7 +12,7 @@ mainMenu.CK:Boolean('CR', 'Use [R]', true)
 mainMenu.CK:Boolean('CRC', 'Cancel [R]', true)
 mainMenu.CK:Boolean('CanItems', 'Use [Gun]', true)
 if Ignite ~= nil then mainMenu.CK:Boolean("AutoIgnite", "Auto Ignite", true) end
-mainMenu.CK:Slider("CountR","Count Enemies", 3, 1, 5, 1)
+mainMenu.CK:Slider("CountR","Count Enemies", 2, 1, 5, 1)
 
 mainMenu:SubMenu('Keys', 'Keys [Katarina]')
 mainMenu.Keys:Key("ComboKat", "Combo [Key]", string.byte(" "))
@@ -37,7 +37,7 @@ local kataCounter = 0
 local kataR = false
 
 PrintChat("<font color=\"#adff2f\">[Katarina Jace]:</font> <font color=\"#00FFFF\">Katarina</font> <font color=\"#adff2f\">Injected successfully!</font>")
-PrintChat("font color=\"#00FFFF\">Update: 0.3</font> ")
+PrintChat("font color=\"#00FFFF\">Update: 0.1</font> ")
 
 OnProcessSpell(function(unit,spell)
 	if unit == myHero and spell.name == "KatarinaR" then
@@ -206,6 +206,20 @@ function CancelR()
 	end 
 end 
 
+function DamageRKat(target)
+	local target = GetCurrentTarget()
+	if target ~= 0 and CastSpell(_R) then
+		local Damage = 0
+		local DamageAP = {375, 562.5, 750}
+		local DamageAD = {1.325302, 1.325302, 1.325302}
+		if IsReady(_R) then
+			Damage = (0.80 * GetBonusDmg(myHero) + DamageAP[GetCastLevel(myHero, _R)] + 0.2 * GetBonusAP(myHero)) + DamageAD[GetCastLevel(myHero, _R)]
+		end
+		return myHero.CalcDamage(target.Addr, Damage)
+	end
+	return 0
+end 
+
 function selfcAR()
 	local rdmg = 0
 	local target = GetCurrentTarget()
@@ -251,7 +265,7 @@ OnTick(function(myHero)
 		if IsReady(_Q) and ValidTarget(enemy, 725) and GetCurrentHP(enemy) < getdmg("Q", enemy) then
 			CastTargetSpell(enemy, _Q)
 		end 
-		if IsReady(_R) and ValidTarget(enemy, 500) and GetCurrentHP(enemy) < getdmg("R", enemy) then
+		if IsReady(_R) and ValidTarget(enemy, 500) and EnemiesAround(GetOrigin(myHero), 500) >= mainMenu.CK.CountR:Value() and GetCurrentHP(enemy) < DamageRKat(enemy) then
 			CastSpell(_R)
 		end 
 		if IsReady(_E) and ValidTarget(enemy, 800) and GetCurrentHP(enemy) < getdmg("E", enemy) then
