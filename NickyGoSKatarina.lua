@@ -37,7 +37,7 @@ local kataCounter = 0
 local kataR = false
 
 PrintChat("<font color=\"#adff2f\">[Katarina Jace]:</font> <font color=\"#00FFFF\">Katarina</font> <font color=\"#adff2f\">Injected successfully!</font>")
-PrintChat("font color=\"#00FFFF\">Update: 0.1</font> ")
+PrintChat("font color=\"#00FFFF\">Update: 0.3</font> ")
 
 OnProcessSpell(function(unit,spell)
 	if unit == myHero and spell.name == "KatarinaR" then
