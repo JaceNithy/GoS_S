@@ -71,7 +71,7 @@ end)
 
 OnCreateObj(function(Obj)
 	if GetDistance(Obj) < 2500 then
-		if Obj.name == "Katarina_Base_W_Indicator_Ally" then
+		if Obj.name == "W_Indicator_Ally" then
 			table.insert(DaggerPos, Obj)
 			local delay = 0.2
 			if GetDistance(Obj) < 50 then
@@ -83,7 +83,7 @@ OnCreateObj(function(Obj)
 end)
 
 OnDeleteObj(function(Obj)
-	if Obj.name == "Katarina_Base_W_Indicator_Ally" then
+	if Obj.name == "W_Indicator_Ally" then
 		for i,v in pairs(DaggerIsCast) do
 			if GetNetworkID(v) == GetNetworkID(Obj) then
 				table.remove(DaggerIsCast, i)
